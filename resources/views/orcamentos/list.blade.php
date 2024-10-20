@@ -34,16 +34,16 @@
                                 @foreach ($orcamentos as $orcamento)
                                 <tr class="hover:bg-gray-100 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $orcamento->paciente }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $orcamento->valor }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">R$ {{ number_format($orcamento->valor, 2, ',', '.') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $orcamento->procedimento }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $orcamento->dentista }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <select name="status" id="status-{{ $orcamento->id }}" class="bg-transparent text-gray-900 text-sm rounded-lg block w-full p-2.5 text-center" style="border: 1px solid transparent; outline: none;">
-                                            <option value="em aberto" style="color: turquoise;" {{ $orcamento->status === 'em aberto' ? 'selected' : '' }}>Em Aberto</option>
-                                            <option value="pendente" style="color: orange;" {{ $orcamento->status === 'pendente' ? 'selected' : '' }}>Pendente</option>
-                                            <option value="em andamento" style="color: blue;" {{ $orcamento->status === 'em andamento' ? 'selected' : '' }}>Em Andamento</option>
-                                            <option value="concluído" style="color: green;" {{ $orcamento->status === 'concluído' ? 'selected' : '' }}>Concluído</option>
-                                            <option value="cancelado" style="color: red;" {{ $orcamento->status === 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+                                            <option value="em aberto" style="color: turquoise;" {{ $orcamento->status === 'Em aberto' ? 'selected' : '' }}>Em Aberto</option>
+                                            <option value="pendente" style="color: orange;" {{ $orcamento->status === 'Pendente' ? 'selected' : '' }}>Pendente</option>
+                                            <option value="em andamento" style="color: blue;" {{ $orcamento->status === 'Em andamento' ? 'selected' : '' }}>Em Andamento</option>
+                                            <option value="concluído" style="color: green;" {{ $orcamento->status === 'Concluído' ? 'selected' : '' }}>Concluído</option>
+                                            <option value="cancelado" style="color: red;" {{ $orcamento->status === 'Cancelado' ? 'selected' : '' }}>Cancelado</option>
                                         </select>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $orcamento->data->format('d/m/Y') }}</td>
@@ -75,8 +75,11 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).ready(function() {
+            // Configurar o DataTable
             $('#orcamentosTable').DataTable({
                 responsive: true,
                 paging: true,
@@ -92,24 +95,19 @@
                     info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
                     infoEmpty: "Nenhuma entrada disponível",
                     infoFiltered: "(filtrado de _MAX_ entradas totais)",
-                    previous: "Anterior",
-                    next: "Próximo",
-                    infoEmpty: "Sem registros",
-                    zeroRecords: "Sem registros",
-                    emptyTable: "Sem registros",
                     paginate: {
                         previous: "Anterior",
                         next: "Próximo"
-                    },
+                    }
                 }
             });
 
-            // Função para mudar a cor do texto do dropdown com base na seleção
-            $('select[name="status"]').change(function() {
-                var status = $(this).val();
+            // Função para alterar a cor do select baseado no status
+            function atualizarCorSelect(selectElement) {
+                var status = $(selectElement).val();
                 var color;
 
-                switch(status) {
+                switch (status) {
                     case 'em aberto':
                         color = 'turquoise';
                         break;
@@ -129,13 +127,51 @@
                         color = 'black';
                 }
 
-                $(this).css('color', color);
+                $(selectElement).css('color', color);
+            }
+
+            // Inicializar a cor do texto do dropdown no carregamento sem disparar AJAX
+            $('select[name="status"]').each(function() {
+                atualizarCorSelect(this); // Apenas altera a cor no carregamento
             });
 
-            // Inicializar a cor do texto do dropdown no carregamento
-            $('select[name="status"]').each(function() {
-                $(this).change(); // Chama a função de mudança de cor no carregamento
+            // Disparar AJAX somente quando o usuário mudar o status
+            $('select[name="status"]').on('change', function() {
+                var status = $(this).val();
+                var orcamentoId = $(this).attr('id').split('-')[1]; // Certifique-se de que o id seja "status-ID"
+
+                // Atualiza a cor do select
+                atualizarCorSelect(this);
+
+                // Fazer a requisição AJAX para atualizar o status no banco
+                $.ajax({
+                    url: '/orcamentos/' + orcamentoId + '/update-status',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        status: status
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // SweetAlert para mostrar o sucesso
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Status atualizado!',
+                                text: response.message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            alert('Erro ao atualizar o status.');
+                        }
+                    },
+                    error: function() {
+                        alert('Ocorreu um erro ao atualizar o status.');
+                    }
+                });
             });
+
         });
     </script>
+
 </x-app-layout>

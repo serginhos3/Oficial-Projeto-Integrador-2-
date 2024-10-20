@@ -35,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/orcamentos', [OrcamentosController::class, 'store'])->name('orcamentos.store'); // Para processar o cadastro
     Route::put('/orcamentos/{id}', [OrcamentosController::class, 'atualizar'])->name('orcamentos.atualizar'); // Rota para atualizar
     Route::delete('/orcamentos/{id}', [OrcamentosController::class, 'destroy'])->name('orcamentos.destroy'); // Rota para deletar
+    Route::post('/orcamentos/{id}/update-status', [OrcamentosController::class, 'updateStatus'])->name('orcamentos.updateStatus');
+
     });
 
 require __DIR__ . '/auth.php';

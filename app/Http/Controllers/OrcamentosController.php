@@ -40,23 +40,53 @@ class OrcamentosController extends Controller
             'status' => 'required|string',
             'data' => 'required|date',
         ]);
-    
+
         // Processar o valor para o formato correto (decimal)
-        $valor = str_replace(['R$', ' ', ','], ['', '', '.'], $validatedData['valor']);
-    
-        // Criar o orçamento
-        Orcamento::create([
-            'paciente' => $validatedData['paciente'],
-            'valor' => $valor,
-            'procedimento' => $validatedData['procedimento'],
-            'dentista' => $validatedData['dentista'],
-            'status' => $validatedData['status'],
-            'data' => $validatedData['data'],
-        ]);
-    
-        return redirect()->route('orcamentos.criar')->with('status', 'Orçamento criado com sucesso!');
+        // Remover 'R$', espaços e substituir vírgula por ponto
+        $valor = str_replace(['R$', '.', ','], ['', '', '.'], $validatedData['valor']);
+
+        // Certificar-se de que o valor é numérico antes de salvar
+        if (is_numeric($valor)) {
+            // Criar o orçamento
+            Orcamento::create([
+                'paciente' => $validatedData['paciente'],
+                'valor' => (float) $valor, // Converter para número decimal
+                'procedimento' => $validatedData['procedimento'],
+                'dentista' => $validatedData['dentista'],
+                'status' => $validatedData['status'],
+                'data' => $validatedData['data'],
+            ]);
+
+            return redirect()->route('orcamentos.list')->with('status', 'Orçamento criado com sucesso!');
+        } else {
+            return back()->withErrors(['valor' => 'O valor informado é inválido.']);
+        }
     }
-        
+
+    public function updateStatus(Request $request, $id)
+    {
+        // Validar o status enviado
+        $request->validate([
+            'status' => 'required|string',
+        ]);
+
+        // Encontrar o orçamento pelo ID
+        $orcamento = Orcamento::find($id);
+
+        if ($orcamento) {
+            // Atualizar o status
+            $orcamento->status = $request->input('status');
+            $orcamento->save();
+
+            // Retornar uma resposta de sucesso
+            return response()->json(['success' => true, 'message' => 'Status atualizado com sucesso!']);
+        }
+
+        // Retornar erro se o orçamento não for encontrado
+        return response()->json(['success' => false, 'message' => 'Orçamento não encontrado.'], 404);
+    }
+
+
     /**
      * Exibe o formulário para editar um orçamento.
      */

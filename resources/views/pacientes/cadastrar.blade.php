@@ -14,7 +14,7 @@
                     </div>
 
                     <form method="POST" action="{{ route('pacientes.store') }}" class="mt-6">
-                        @csrf <!-- Adiciona um token CSRF para segurança -->
+                        @csrf 
 
                         <div>
                             <label for="nome" class="block text-sm font-medium text-gray-700">Nome</label>
