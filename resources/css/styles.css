@@ -1,0 +1,4 @@
+/* Estilo aplicado na seleção dentro do Select2 */
+.select2-selection__rendered {
+    color: inherit !important;
+}

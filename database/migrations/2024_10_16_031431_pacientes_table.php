@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pacientes', function (Blueprint $table) {
-            $table->id(); // Coluna de ID auto-incrementável
-            $table->string('nome'); // Nome do paciente
-            $table->string('email')->unique(); // E-mail do paciente, deve ser único
-            $table->string('telefone')->nullable(); // Telefone do paciente (pode ser nulo)
-            $table->text('endereco')->nullable(); // Endereço do paciente (opcional)
-            $table->date('datanascimento')->nullable(); // Data de nascimento do paciente (opcional)
-            $table->timestamps(); // Colunas para created_at e updated_at
+            $table->id();
+            $table->string('nome');
+            $table->string('email')->unique();
+            $table->string('telefone')->nullable();
+            $table->text('endereco')->nullable(); 
+            $table->date('datanascimento')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pacientes'); // Remove a tabela se existir
+        Schema::dropIfExists('pacientes');
     }
 };
