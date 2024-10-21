@@ -86,7 +86,6 @@ class OrcamentosController extends Controller
         return response()->json(['success' => false, 'message' => 'Orçamento não encontrado.'], 404);
     }
 
-
     /**
      * Exibe o formulário para editar um orçamento.
      */
@@ -103,7 +102,7 @@ class OrcamentosController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'paciente' => 'required|string|max:255',
-            'valor' => 'required|valor|unique:orcamentos,valor,' . $id,
+            'valor' => 'required|numeric|unique:orcamentos,valor,' . $id,
             'procedimento' => 'nullable|string|max:15',
             'dentista' => 'nullable|string|max:255',
             'status' => 'nullable|string',
