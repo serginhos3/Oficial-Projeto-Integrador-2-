@@ -9,33 +9,32 @@ use Illuminate\Support\Facades\Validator;
 
 class PacientesController extends Controller
 {
-    /**
-     * Exibe a lista de pacientes.
-     */
+
     public function list(Request $request): View
     {
-        $pacientes = Paciente::all(); // Obtém todos os pacientes
-        return view('pacientes.list', compact('pacientes')); // Passa a lista de pacientes para a view
+        $pacientes = Paciente::all();
+        return view('pacientes.list', compact('pacientes'));
     }
 
-    /**
-     * Exibe o formulário para cadastrar um novo paciente.
-     */
+
     public function cadastrar(): View
     {
         return view('pacientes.cadastrar');
     }
 
-    /**
-     * Processa o cadastro de um novo paciente.
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'nome' => 'required|string|max:255',
             'email' => 'required|email|unique:pacientes,email',
-            'telefone' => 'nullable|string|max:15',
-            'endereco' => 'nullable|string|max:255',
+            'telefone' => 'nullable|string|max:11',
+            'cep' => 'nullable|string|max:15',
+            'logradouro' => 'nullable|string|max:255',
+            'numero' => 'nullable|string|max:255',
+            'complemento' => 'nullable|string|max:255',
+            'bairro' => 'nullable|string|max:255',
+            'cidade' => 'nullable|string|max:255',
+            'estado' => 'nullable|string|max:255',
             'datanascimento' => 'nullable|date',
         ]);
 
@@ -45,32 +44,31 @@ class PacientesController extends Controller
                 ->withInput();
         }
 
-        // Criação do paciente
-        Paciente::create($request->only('nome', 'email', 'telefone', 'endereco', 'datanascimento'));
+        Paciente::create($request->only('nome', 'email', 'telefone', 'cep', 'logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'estado', 'datanascimento'));
 
-        // Redirecionar para a listagem de pacientes com uma mensagem de sucesso
         return redirect()->route('pacientes.list')->with('status', 'Paciente cadastrado com sucesso!');
     }
 
-    /**
-     * Exibe o formulário para editar um paciente.
-     */
+
     public function editar($id): View
     {
-        $paciente = Paciente::findOrFail($id); // Obtém o paciente ou retorna 404
-        return view('pacientes.editar', compact('paciente')); // Passa o paciente para a view
+        $paciente = Paciente::findOrFail($id);
+        return view('pacientes.editar', compact('paciente'));
     }
 
-    /**
-     * Atualiza os dados de um paciente.
-     */
     public function atualizar(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'nome' => 'required|string|max:255',
             'email' => 'required|email|unique:pacientes,email,' . $id,
             'telefone' => 'nullable|string|max:15',
-            'endereco' => 'nullable|string|max:255',
+            'cep' => 'nullable|string|max:255',
+            'logradouro' => 'nullable|string|max:255',
+            'numero' => 'nullable|string|max:255',
+            'complemento' => 'nullable|string|max:255',
+            'bairro' => 'nullable|string|max:255',
+            'cidade' => 'nullable|string|max:255',
+            'estado' => 'nullable|string|max:255',    
             'datanascimento' => 'nullable|date',
         ]);
 
@@ -80,21 +78,16 @@ class PacientesController extends Controller
                 ->withInput();
         }
 
-        // Atualiza o paciente
         $paciente = Paciente::findOrFail($id);
-        $paciente->update($request->only('nome', 'email', 'telefone', 'endereco', 'datanascimento'));
+        $paciente->update($request->only('nome', 'email', 'telefone', 'cep', 'logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'estado', 'datanascimento'));
 
-        // Redirecionar para a listagem de pacientes com uma mensagem de sucesso
         return redirect()->route('pacientes.list')->with('status', 'Paciente atualizado com sucesso!');
     }
 
-    /**
-     * Remove um paciente.
-     */
     public function destroy($id)
     {
-        $paciente = Paciente::findOrFail($id); // Obtém o paciente ou retorna 404
-        $paciente->delete(); // Deleta o paciente
+        $paciente = Paciente::findOrFail($id);
+        $paciente->delete();
 
         return redirect()->route('pacientes.list')->with('status', 'Paciente excluído com sucesso!');
     }

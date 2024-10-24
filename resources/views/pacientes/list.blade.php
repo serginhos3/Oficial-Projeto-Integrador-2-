@@ -17,6 +17,14 @@
                     <div class="mb-4 text-green-600 font-semibold">{{ session('status') }}</div>
                     @endif
 
+
+                    <div class="overflow-x-auto">
+                        <table id="pacientesTable" class="min-w-full divide-y divide-gray-200">
+                            <!-- Cabeçalho e corpo da tabela -->
+                        </table>
+                    </div>
+
+
                     <div class="overflow-x-auto">
                         <table id="pacientesTable" class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-200">
@@ -24,9 +32,15 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Nome</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Email</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Telefone</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Endereço</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">CEP</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Logradouro</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Número</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Complemento</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Bairro</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Cidade</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Estado</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Data de Nascimento</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Ações</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-24">Ações</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -35,18 +49,24 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->nome }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->email }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->telefone }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->endereco }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->cep }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->logradouro }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->numero }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->complemento }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->bairro }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->cidade }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->estado }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->datanascimento->format('d/m/Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex justify-center gap-2">
                                             <a href="{{ route('pacientes.editar', $paciente->id) }}" class="text-black border-0 bg-transparent hover:bg-transparent" title="Editar">
-                                                <i class="far fa-edit"></i> <!-- Ícone de lápis vazio -->
+                                                <i class="far fa-edit"></i>
                                             </a>
                                             <form action="{{ route('pacientes.destroy', $paciente->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-600" title="Excluir" onclick="return confirm('Você tem certeza que deseja excluir este paciente?');">
-                                                    <i class="far fa-trash-alt"></i> <!-- Ícone de lixeira vazio -->
+                                                    <i class="far fa-trash-alt"></i>
                                                 </button>
                                             </form>
                                         </div>
@@ -68,7 +88,7 @@
     <script>
         $(document).ready(function() {
             $('#pacientesTable').DataTable({
-                responsive: true, // Habilita a responsividade
+                responsive: true,
                 paging: true,
                 searching: true,
                 order: [
@@ -76,6 +96,7 @@
                 ],
                 pageLength: 10,
                 lengthChange: false,
+                dom: '<"flex justify-between mb-4"<"search-wrapper"f>>t',
                 language: {
                     search: "Pesquisar:",
                     lengthMenu: "Mostrar _MENU_ entradas",
@@ -91,10 +112,8 @@
                         previous: "Anterior",
                         next: "Próximo"
                     },
-
                 }
             });
         });
     </script>
-
 </x-app-layout>

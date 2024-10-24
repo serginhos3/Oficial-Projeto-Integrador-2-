@@ -79,7 +79,7 @@
 
     <script>
         $(document).ready(function() {
-            // Configurar o DataTable
+
             $('#orcamentosTable').DataTable({
                 responsive: true,
                 paging: true,
@@ -102,7 +102,6 @@
                 }
             });
 
-            // Função para alterar a cor do select baseado no status
             function atualizarCorSelect(selectElement) {
                 var status = $(selectElement).val();
                 var color;
@@ -130,20 +129,20 @@
                 $(selectElement).css('color', color);
             }
 
-            // Inicializar a cor do texto do dropdown no carregamento sem disparar AJAX
+
             $('select[name="status"]').each(function() {
-                atualizarCorSelect(this); // Apenas altera a cor no carregamento
+                atualizarCorSelect(this);
             });
 
-            // Disparar AJAX somente quando o usuário mudar o status
+
             $('select[name="status"]').on('change', function() {
                 var status = $(this).val();
-                var orcamentoId = $(this).attr('id').split('-')[1]; // Certifique-se de que o id seja "status-ID"
+                var orcamentoId = $(this).attr('id').split('-')[1];
 
-                // Atualiza a cor do select
+
                 atualizarCorSelect(this);
 
-                // Fazer a requisição AJAX para atualizar o status no banco
+
                 $.ajax({
                     url: '/orcamentos/' + orcamentoId + '/update-status',
                     method: 'POST',
@@ -153,7 +152,7 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            // SweetAlert para mostrar o sucesso
+                            
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Status atualizado!',

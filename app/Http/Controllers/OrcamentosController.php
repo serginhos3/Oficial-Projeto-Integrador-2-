@@ -100,9 +100,10 @@ class OrcamentosController extends Controller
      */
     public function atualizar(Request $request, $id)
     {
+        // Validar os dados de entrada
         $validator = Validator::make($request->all(), [
             'paciente' => 'required|string|max:255',
-            'valor' => 'required|numeric|unique:orcamentos,valor,' . $id,
+            'valor' => 'required|string', // Receber como string inicialmente
             'procedimento' => 'nullable|string|max:15',
             'dentista' => 'nullable|string|max:255',
             'status' => 'nullable|string',
@@ -115,9 +116,27 @@ class OrcamentosController extends Controller
                 ->withInput();
         }
 
+        // Processar o valor para o formato correto (decimal)
+        // Remover 'R$', espaços e substituir vírgula por ponto
+        $valor = str_replace(['R$', '.', ','], ['', '', '.'], $request->input('valor'));
+
+        // Certificar-se de que o valor é numérico antes de salvar
+        if (!is_numeric($valor)) {
+            return redirect()->route('orcamentos.editar', $id)
+                ->withErrors(['valor' => 'O valor informado é inválido.'])
+                ->withInput();
+        }
+
         // Atualiza o orçamento
         $orcamento = Orcamento::findOrFail($id);
-        $orcamento->update($request->only('paciente', 'valor', 'procedimento', 'dentista', 'status', 'data'));
+        $orcamento->update([
+            'paciente' => $request->input('paciente'),
+            'valor' => (float) $valor, // Converter para número decimal
+            'procedimento' => $request->input('procedimento'),
+            'dentista' => $request->input('dentista'),
+            'status' => $request->input('status'),
+            'data' => $request->input('data'),
+        ]);
 
         // Redirecionar para a listagem de orçamentos com uma mensagem de sucesso
         return redirect()->route('orcamentos.list')->with('status', 'Orçamento atualizado com sucesso!');

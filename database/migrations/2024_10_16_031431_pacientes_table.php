@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('pacientes', function (Blueprint $table) {
@@ -16,15 +14,18 @@ return new class extends Migration
             $table->string('nome');
             $table->string('email')->unique();
             $table->string('telefone')->nullable();
-            $table->text('endereco')->nullable(); 
+            $table->text('cep')->nullable(); 
+            $table->text('logradouro')->nullable(); 
+            $table->text('numero')->nullable(); 
+            $table->text('complemento')->nullable(); 
+            $table->text('bairro')->nullable(); 
+            $table->text('cidade')->nullable(); 
+            $table->text('estado')->nullable(); 
             $table->date('datanascimento')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('pacientes');
