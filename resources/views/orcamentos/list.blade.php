@@ -49,6 +49,9 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $orcamento->data->format('d/m/Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex justify-center gap-2">
+                                            <a href="{{ route('orcamentos.pdf', $orcamento->id) }}" class="text-blue-600" title="Gerar PDF">
+                                                <i class="far fa-file-pdf"></i>
+                                            </a>
                                             <a href="{{ route('orcamentos.editar', $orcamento->id) }}" class="text-black border-0 bg-transparent hover:bg-transparent" title="Editar">
                                                 <i class="far fa-edit"></i>
                                             </a>
@@ -79,7 +82,6 @@
 
     <script>
         $(document).ready(function() {
-
             $('#orcamentosTable').DataTable({
                 responsive: true,
                 paging: true,
@@ -89,16 +91,22 @@
                 ],
                 pageLength: 10,
                 lengthChange: false,
+                dom: '<"flex justify-between mb-4"<"search-wrapper"f>>t',
                 language: {
                     search: "Pesquisar:",
                     lengthMenu: "Mostrar _MENU_ entradas",
                     info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
                     infoEmpty: "Nenhuma entrada disponível",
                     infoFiltered: "(filtrado de _MAX_ entradas totais)",
+                    previous: "Anterior", // Traduzir "Previous"
+                    next: "Próximo", // Traduzir "Next"
+                    infoEmpty: "Sem registros",
+                    zeroRecords: "Sem registros",
+                    emptyTable: "Sem registros",
                     paginate: {
                         previous: "Anterior",
                         next: "Próximo"
-                    }
+                    },
                 }
             });
 
@@ -152,7 +160,7 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            
+
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Status atualizado!',

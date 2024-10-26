@@ -37,9 +37,9 @@
 
                 <a href="{{ route('orcamentos.list') }}" class="bg-indigo-200 p-4 rounded-lg text-gray-800 shadow-md transition duration-300 hover:shadow-lg hover:bg-indigo-300">
                     <div class="text-center">
-                        <h3 class="text-lg font-medium">Orçamentos Cadastrados</h3>
+                        <h3 class="text-lg font-medium">Orçamentos Novos</h3>
                         <p class="text-3xl font-semibold mt-1">{{ $totalOrcamentos }}</p>
-                        <span class="text-sm mt-1">Total de registros</span>
+                        <span class="text-sm mt-1">Orçamentos neste mês</span>
                     </div>
                 </a>
 

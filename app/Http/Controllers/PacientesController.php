@@ -26,15 +26,15 @@ class PacientesController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nome' => 'required|string|max:255',
-            'email' => 'required|email|unique:pacientes,email',
-            'telefone' => 'nullable|string|max:11',
-            'cep' => 'nullable|string|max:15',
+            'email' => 'required|email|unique:pacientes,email|max:255',
+            'telefone' => 'nullable|string|regex:/^\d{2} \d{5}-\d{4}$/|max:13',
+            'cep' => 'nullable|string|size:8',
             'logradouro' => 'nullable|string|max:255',
-            'numero' => 'nullable|string|max:255',
+            'numero' => 'nullable|string|max:10',
             'complemento' => 'nullable|string|max:255',
             'bairro' => 'nullable|string|max:255',
             'cidade' => 'nullable|string|max:255',
-            'estado' => 'nullable|string|max:255',
+            'estado' => 'nullable|string|size:2',
             'datanascimento' => 'nullable|date',
         ]);
 

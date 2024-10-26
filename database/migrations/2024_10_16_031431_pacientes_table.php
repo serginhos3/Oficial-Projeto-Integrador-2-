@@ -11,21 +11,21 @@ return new class extends Migration
     {
         Schema::create('pacientes', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->string('email')->unique();
-            $table->string('telefone')->nullable();
-            $table->text('cep')->nullable(); 
-            $table->text('logradouro')->nullable(); 
-            $table->text('numero')->nullable(); 
-            $table->text('complemento')->nullable(); 
-            $table->text('bairro')->nullable(); 
-            $table->text('cidade')->nullable(); 
-            $table->text('estado')->nullable(); 
+            $table->string('nome', 255);
+            $table->string('email', 255)->unique();
+            $table->string('telefone', 13)->nullable();
+            $table->string('cep', 8)->nullable();
+            $table->string('logradouro', 255)->nullable(); 
+            $table->string('numero', 10)->nullable();
+            $table->string('complemento', 255)->nullable(); 
+            $table->string('bairro', 255)->nullable(); 
+            $table->string('cidade', 255)->nullable(); 
+            $table->string('estado', 2)->nullable();
             $table->date('datanascimento')->nullable();
             $table->timestamps();
         });
     }
-
+    
     public function down(): void
     {
         Schema::dropIfExists('pacientes');

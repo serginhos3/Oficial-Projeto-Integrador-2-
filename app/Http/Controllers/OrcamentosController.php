@@ -6,6 +6,7 @@ use App\Models\Orcamento; // Importa a classe Orçamento
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class OrcamentosController extends Controller
 {
@@ -151,5 +152,20 @@ class OrcamentosController extends Controller
         $orcamento->delete(); // Deleta o paciente
 
         return redirect()->route('orcamentos.list')->with('status', 'Orçamento excluído com sucesso!');
+    }
+
+    public function gerarPdf($id)
+    {
+       
+        $orcamento = Orcamento::findOrFail($id);
+
+        $logoPath = public_path('/img/logo.jpg');
+
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logoSrc = 'data:image/png;base64,' . $logoData;
+
+        $pdf = PDF::loadView('orcamentos.pdf', compact('orcamento', 'logoSrc'));
+
+        return $pdf->download('orcamento_' . $orcamento->id . '.pdf');
     }
 }

@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/orcamentos/{id}', [OrcamentosController::class, 'atualizar'])->name('orcamentos.atualizar');
     Route::delete('/orcamentos/{id}', [OrcamentosController::class, 'destroy'])->name('orcamentos.destroy');
     Route::post('/orcamentos/{id}/update-status', [OrcamentosController::class, 'updateStatus'])->name('orcamentos.updateStatus');
+    Route::get('/orcamentos/{id}/pdf', [OrcamentosController::class, 'gerarPdf'])->name('orcamentos.pdf');
 
     });
 
@@ -71,5 +72,6 @@ Route::get('/dashboard', function () {
         'valorTotalOrcamentos'
     ));
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 
