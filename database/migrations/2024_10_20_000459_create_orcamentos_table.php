@@ -12,14 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orcamentos', function (Blueprint $table) {
-            $table->id();
+            $table->id();            
             $table->string('paciente');
             $table->decimal('valor')->unique();
             $table->string('procedimento')->nullable();
-            $table->text('dentista')->nullable(); 
+            $table->text('dentista')->nullable();
             $table->enum('status', ['Em aberto', 'Pendente', 'Em andamento', 'Concluído', 'Cancelado'])->default('Em aberto');
             $table->date('data')->nullable();
             $table->timestamps();
+            $table->unsignedBigInteger('idpaciente');
+            $table->foreign('idpaciente')
+                ->references('id')
+                ->on('pacientes')
+                ->onDelete('cascade');
         });
     }
 

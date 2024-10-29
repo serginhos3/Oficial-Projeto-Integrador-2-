@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\PDF;
+use App\Models\Paciente;
 
 class OrcamentosController extends Controller
 {
@@ -16,7 +17,7 @@ class OrcamentosController extends Controller
     public function list(Request $request): View
     {
         $orcamentos = Orcamento::all();
-        return view('orcamentos.list', compact('orcamentos')); // Passa a lista de orçamento para a view
+        return view('orcamentos.list', compact('orcamentos'));
     }
 
     /**
@@ -24,7 +25,9 @@ class OrcamentosController extends Controller
      */
     public function criar(): View
     {
-        return view('orcamentos.criar');
+
+        $pacientes = Paciente::all(); // Carrega todos os pacientes
+        return view('orcamentos.criar', compact('pacientes'));
     }
 
     /**
@@ -32,58 +35,61 @@ class OrcamentosController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar os dados de entrada
+
         $validatedData = $request->validate([
-            'paciente' => 'required|string',
-            'valor' => 'required|string', // Receber como string inicialmente
+            'idpaciente' => 'required|exists:pacientes,id', // Valida 'idpaciente' em vez de 'paciente'
+            'valor' => 'required|string',
             'procedimento' => 'required|string',
             'dentista' => 'required|string',
             'status' => 'required|string',
             'data' => 'required|date',
         ]);
-
-        // Processar o valor para o formato correto (decimal)
-        // Remover 'R$', espaços e substituir vírgula por ponto
+    
         $valor = str_replace(['R$', '.', ','], ['', '', '.'], $validatedData['valor']);
 
-        // Certificar-se de que o valor é numérico antes de salvar
+        $pacienteNome = \App\Models\Paciente::where('id', $validatedData['idpaciente'])->value('nome');
+    
         if (is_numeric($valor)) {
-            // Criar o orçamento
             Orcamento::create([
-                'paciente' => $validatedData['paciente'],
-                'valor' => (float) $valor, // Converter para número decimal
+                'idpaciente' => $validatedData['idpaciente'],
+                'paciente' => $pacienteNome,  // Verifique aqui
+                'valor' => (float) $valor,
                 'procedimento' => $validatedData['procedimento'],
                 'dentista' => $validatedData['dentista'],
                 'status' => $validatedData['status'],
                 'data' => $validatedData['data'],
             ]);
-
+    
             return redirect()->route('orcamentos.list')->with('status', 'Orçamento criado com sucesso!');
         } else {
             return back()->withErrors(['valor' => 'O valor informado é inválido.']);
         }
     }
 
+    public function buscarPacientes(Request $request)
+    {
+        $search = $request->input('query');
+        $pacientes = Paciente::where('nome', 'LIKE', "%{$search}%")->get();
+
+        return response()->json($pacientes);
+    }
+
     public function updateStatus(Request $request, $id)
     {
-        // Validar o status enviado
         $request->validate([
             'status' => 'required|string',
         ]);
 
-        // Encontrar o orçamento pelo ID
         $orcamento = Orcamento::find($id);
 
         if ($orcamento) {
-            // Atualizar o status
             $orcamento->status = $request->input('status');
             $orcamento->save();
 
-            // Retornar uma resposta de sucesso
+
             return response()->json(['success' => true, 'message' => 'Status atualizado com sucesso!']);
         }
 
-        // Retornar erro se o orçamento não for encontrado
         return response()->json(['success' => false, 'message' => 'Orçamento não encontrado.'], 404);
     }
 
@@ -92,8 +98,8 @@ class OrcamentosController extends Controller
      */
     public function editar($id): View
     {
-        $orcamento = Orcamento::findOrFail($id); // Obtém o orçamento ou retorna 404
-        return view('orcamentos.editar', compact('orcamento')); // Passa o orçamento para a view
+        $orcamento = Orcamento::findOrFail($id);
+        return view('orcamentos.editar', compact('orcamento'));
     }
 
     /**
@@ -101,11 +107,11 @@ class OrcamentosController extends Controller
      */
     public function atualizar(Request $request, $id)
     {
-        // Validar os dados de entrada
+
         $validator = Validator::make($request->all(), [
             'paciente' => 'required|string|max:255',
-            'valor' => 'required|string', // Receber como string inicialmente
-            'procedimento' => 'nullable|string|max:15',
+            'valor' => 'required|string',
+            'procedimento' => 'nullable|string|max:255',
             'dentista' => 'nullable|string|max:255',
             'status' => 'nullable|string',
             'data' => 'nullable|date',
@@ -117,29 +123,24 @@ class OrcamentosController extends Controller
                 ->withInput();
         }
 
-        // Processar o valor para o formato correto (decimal)
-        // Remover 'R$', espaços e substituir vírgula por ponto
         $valor = str_replace(['R$', '.', ','], ['', '', '.'], $request->input('valor'));
 
-        // Certificar-se de que o valor é numérico antes de salvar
         if (!is_numeric($valor)) {
             return redirect()->route('orcamentos.editar', $id)
                 ->withErrors(['valor' => 'O valor informado é inválido.'])
                 ->withInput();
         }
 
-        // Atualiza o orçamento
         $orcamento = Orcamento::findOrFail($id);
         $orcamento->update([
-            'paciente' => $request->input('paciente'),
-            'valor' => (float) $valor, // Converter para número decimal
+            // 'paciente' => $request->input('paciente'),
+            'valor' => (float) $valor,
             'procedimento' => $request->input('procedimento'),
             'dentista' => $request->input('dentista'),
             'status' => $request->input('status'),
             'data' => $request->input('data'),
         ]);
 
-        // Redirecionar para a listagem de orçamentos com uma mensagem de sucesso
         return redirect()->route('orcamentos.list')->with('status', 'Orçamento atualizado com sucesso!');
     }
 
@@ -148,15 +149,15 @@ class OrcamentosController extends Controller
      */
     public function destroy($id)
     {
-        $orcamento = Orcamento::findOrFail($id); // Obtém o paciente ou retorna 404
-        $orcamento->delete(); // Deleta o paciente
+        $orcamento = Orcamento::findOrFail($id);
+        $orcamento->delete();
 
         return redirect()->route('orcamentos.list')->with('status', 'Orçamento excluído com sucesso!');
     }
 
     public function gerarPdf($id)
     {
-       
+
         $orcamento = Orcamento::findOrFail($id);
 
         $logoPath = public_path('/img/logo.jpg');

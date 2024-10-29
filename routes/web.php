@@ -37,8 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/orcamentos/{id}', [OrcamentosController::class, 'destroy'])->name('orcamentos.destroy');
     Route::post('/orcamentos/{id}/update-status', [OrcamentosController::class, 'updateStatus'])->name('orcamentos.updateStatus');
     Route::get('/orcamentos/{id}/pdf', [OrcamentosController::class, 'gerarPdf'])->name('orcamentos.pdf');
-
-    });
+    Route::get('/pacientes/buscar', [OrcamentosController::class, 'buscarPacientes'])->name('pacientes.buscar');
+});
 
 require __DIR__ . '/auth.php';
 
@@ -55,8 +55,8 @@ Route::get('/dashboard', function () {
     $totalPacientes = Paciente::count();
 
     $novosPacientes = Paciente::whereMonth('created_at', Carbon::now()->month)
-                               ->whereYear('created_at', Carbon::now()->year)
-                               ->count();
+        ->whereYear('created_at', Carbon::now()->year)
+        ->count();
 
     $valorTotalOrcamentos = Orcamento::sum('valor');
 

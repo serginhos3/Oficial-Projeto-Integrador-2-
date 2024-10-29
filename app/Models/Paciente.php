@@ -27,4 +27,10 @@ class Paciente extends Model
     protected $casts = [
         'datanascimento' => 'date',
     ];
+
+    // App\Models\Paciente.php
+    public function orcamentos()
+    {
+        return $this->hasMany(Orcamento::class, 'idpaciente');
+    }
 }

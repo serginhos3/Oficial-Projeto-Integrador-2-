@@ -44,6 +44,7 @@
                         <div class="mt-4">
                             <label for="datanascimento" class="block text-sm font-medium text-gray-700">Data de Nascimento</label>
                             <input type="date" name="datanascimento" id="datanascimento" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500 transition" required>
+                            <span id="error-message" class="text-red-500 text-sm mt-1 hidden">O paciente deve ter pelo menos 4 anos de idade.</span>
                         </div>
 
                         <div class="mt-6 bg-gray-100 p-6 rounded-lg shadow-md w-full">
@@ -126,6 +127,26 @@
                 alert("Erro ao buscar endereço.");
             }
         }
+
+
+        document.getElementById('datanascimento').addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            const monthDifference = today.getMonth() - birthDate.getMonth();
+
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            const errorMessage = document.getElementById('error-message');
+            if (age < 4) {
+                errorMessage.classList.remove('hidden');
+                this.value = ''; // Limpa o campo
+            } else {
+                errorMessage.classList.add('hidden');
+            }
+        });
     </script>
 
 </x-app-layout>
