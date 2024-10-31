@@ -37,14 +37,13 @@
                             <input type="date" name="datanascimento" id="datanascimento" value="{{ old('datanascimento', $paciente->datanascimento->format('Y-m-d')) }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500 transition" required>
                         </div>
 
-
                         <div class="mt-6 bg-gray-100 p-6 rounded-lg shadow-md w-full">
                             <h3 class="text-lg font-semibold mb-4 text-gray-800">Endereço</h3>
 
                             <div class="space-y-4">
                                 <div>
                                     <label for="cep" class="block text-sm font-medium text-gray-700">CEP</label>
-                                    <input type="text" name="cep" id="cep" value="{{ old('cep', $paciente->cep) }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Informe o CEP">
+                                    <input type="text" name="cep" id="cep" value="{{ old('cep', $paciente->cep) }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Informe o CEP" onblur="buscarEndereco()">
                                 </div>
                                 <div>
                                     <label for="logradouro" class="block text-sm font-medium text-gray-700">Logradouro</label>
@@ -81,4 +80,59 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#telefone').mask('00 00000-0000');
+        });
+
+        async function buscarEndereco() {
+            const cep = document.getElementById('cep').value;
+            const apiKey = "{{ env('GOOGLE_MAPS_API_KEY') }}";
+            const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${cep}&key=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.status === 'OK') {
+                    const address = data.results[0].address_components;
+
+                    address.forEach(component => {
+                        if (component.types.includes("route")) {
+                            document.getElementById('logradouro').value = component.long_name;
+                        }
+                        if (component.types.includes("locality") || component.types.includes("sublocality") || component.types.includes("postal_town")) {
+                            document.getElementById('bairro').value = component.long_name;
+                        }
+                        if (component.types.includes("locality") || component.types.includes("administrative_area_level_2")) {
+                            document.getElementById('cidade').value = component.long_name;
+                        }
+                        if (component.types.includes("administrative_area_level_1")) {
+                            document.getElementById('estado').value = component.short_name;
+                        }
+                    });
+                } else {
+                    alert("Endereço não encontrado. Verifique o CEP.");
+                }
+            } catch (error) {
+                console.error("Erro ao buscar endereço:", error);
+                alert("Erro ao buscar endereço.");
+            }
+        }
+
+        document.getElementById('datanascimento').addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+
+            if (today < new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate())) {
+                age--;
+            }
+
+            alert(`Idade do paciente: ${age}`);
+        });
+    </script>
 </x-app-layout>

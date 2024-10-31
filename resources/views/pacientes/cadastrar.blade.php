@@ -112,7 +112,10 @@
                         if (component.types.includes("route")) {
                             document.getElementById('logradouro').value = component.long_name;
                         }
-                        if (component.types.includes("locality")) {
+                        if (component.types.includes("locality") || component.types.includes("sublocality") || component.types.includes("postal_town")) {
+                            document.getElementById('bairro').value = component.long_name;
+                        }
+                        if (component.types.includes("locality") || component.types.includes("administrative_area_level_2")) {
                             document.getElementById('cidade').value = component.long_name;
                         }
                         if (component.types.includes("administrative_area_level_1")) {
@@ -127,7 +130,6 @@
                 alert("Erro ao buscar endereço.");
             }
         }
-
 
         document.getElementById('datanascimento').addEventListener('change', function() {
             const birthDate = new Date(this.value);
@@ -148,5 +150,4 @@
             }
         });
     </script>
-
 </x-app-layout>

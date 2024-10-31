@@ -22,9 +22,11 @@
                         @csrf
                         @method('PUT')
 
-                        <div>
+                        <div class="relative mt-1">
                             <label for="paciente" class="block text-sm font-medium text-gray-700">Nome do paciente</label>
                             <input type="text" name="paciente" id="paciente" value="{{ old('paciente', $orcamento->paciente) }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" placeholder="Digite o nome do paciente">
+                            <ul id="sugestoes" class="border rounded-md bg-blue-100 hidden absolute z-10 w-full max-h-40 overflow-auto shadow-lg transition-all duration-300"></ul>
+                            <input type="hidden" name="idpaciente" id="idpaciente" value="{{ old('idpaciente', $orcamento->idpaciente) }}">
                         </div>
 
                         <div class="mt-4">
@@ -66,11 +68,11 @@
                             <p class="text-sm text-gray-500">Status atual: <strong>{{ ucfirst($orcamento->status) }}</strong></p>
                             <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" required>
                                 <option value="" disabled selected>Selecione um status</option>
-                                <option value="em aberto" {{ $orcamento->status == 'Em aberto' ? 'selected' : '' }}>Em Aberto</option>
-                                <option value="pendente" {{ $orcamento->status == 'Pendente' ? 'selected' : '' }}>Pendente</option>
-                                <option value="em andamento" {{ $orcamento->status == 'Em andamento' ? 'selected' : '' }}>Em Andamento</option>
-                                <option value="concluido" {{ $orcamento->status == 'Concluído' ? 'selected' : '' }}>Concluído</option>
-                                <option value="cancelado" {{ $orcamento->status == 'Cancelado' ? 'selected' : '' }}>Cancelado</option>
+                                <option value="em aberto" {{ $orcamento->status == 'em aberto' ? 'selected' : '' }}>Em Aberto</option>
+                                <option value="pendente" {{ $orcamento->status == 'pendente' ? 'selected' : '' }}>Pendente</option>
+                                <option value="em andamento" {{ $orcamento->status == 'em andamento' ? 'selected' : '' }}>Em Andamento</option>
+                                <option value="concluido" {{ $orcamento->status == 'concluido' ? 'selected' : '' }}>Concluído</option>
+                                <option value="cancelado" {{ $orcamento->status == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
                             </select>
                         </div>
 
@@ -88,3 +90,41 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    document.getElementById('paciente').addEventListener('input', function() {
+        const query = this.value;
+        if (query.length < 2) {
+            document.getElementById('sugestoes').classList.add('hidden');
+            return;
+        }
+
+        fetch(`/pacientes/buscar?query=${query}`)
+            .then(response => response.json())
+            .then(pacientes => {
+                const sugestoes = document.getElementById('sugestoes');
+                sugestoes.innerHTML = '';
+                pacientes.forEach(paciente => {
+                    const li = document.createElement('li');
+                    li.textContent = paciente.nome;
+                    li.classList.add('px-4', 'py-2', 'cursor-pointer', 'hover:bg-blue-200'); // Hover em azul mais claro
+                    li.addEventListener('click', () => {
+                        document.getElementById('paciente').value = paciente.nome;
+                        document.getElementById('idpaciente').value = paciente.id;
+                        sugestoes.classList.add('hidden');
+                    });
+                    sugestoes.appendChild(li);
+                });
+                sugestoes.classList.remove('hidden');
+            });
+    });
+
+    document.addEventListener('click', function(event) {
+        const pacienteInput = document.getElementById('paciente');
+        const sugestoes = document.getElementById('sugestoes');
+
+        if (!pacienteInput.contains(event.target) && !sugestoes.contains(event.target)) {
+            sugestoes.classList.add('hidden');
+        }
+    });
+</script>

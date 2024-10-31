@@ -60,6 +60,20 @@
             color: #222;
         }
 
+        /* Campo de entrada para validade */
+        .validade-input {
+            display: inline-block;
+            border: none; /* Remove a borda do campo */
+            border-bottom: 1px solid #333; /* Adiciona uma linha na parte inferior */
+            width: 50px; /* Largura do campo de entrada */
+            font-size: 14px;
+            color: #333;
+            outline: none; /* Remove o contorno padrão do campo */
+            margin-top: 5px; /* Espaço acima do campo */
+            padding: 2px 5px; /* Espaçamento interno do campo */
+            text-align: center; /* Centraliza o texto */
+        }
+
         /* Observações */
         .observations {
             margin-top: 10px;
@@ -123,6 +137,7 @@
             <p><strong>Procedimento:</strong> {{ $orcamento->procedimento }}</p>
             <p><strong>Dentista:</strong> {{ $orcamento->dentista }}</p>
             <p><strong>Data:</strong> {{ $orcamento->data->format('d/m/Y') }}</p>
+            <p><strong>Válido por: ____ dias.</p>
         </div>
 
         <div class="observations">
