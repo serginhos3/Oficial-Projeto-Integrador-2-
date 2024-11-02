@@ -18,7 +18,6 @@
             padding: 0;
         }
 
-        /* Container principal */
         .container {
             max-width: 100%;
             padding: 15px;
@@ -38,7 +37,6 @@
             height: auto;
         }
 
-        /* Informações do orçamento */
         .info {
             font-size: 14px;
             color: #444;
@@ -60,21 +58,19 @@
             color: #222;
         }
 
-        /* Campo de entrada para validade */
         .validade-input {
             display: inline-block;
-            border: none; /* Remove a borda do campo */
-            border-bottom: 1px solid #333; /* Adiciona uma linha na parte inferior */
-            width: 50px; /* Largura do campo de entrada */
+            border: none; 
+            border-bottom: 1px solid #333;
+            width: 50px;
             font-size: 14px;
             color: #333;
-            outline: none; /* Remove o contorno padrão do campo */
-            margin-top: 5px; /* Espaço acima do campo */
-            padding: 2px 5px; /* Espaçamento interno do campo */
-            text-align: center; /* Centraliza o texto */
+            outline: none;
+            margin-top: 5px;
+            padding: 2px 5px;
+            text-align: center;
         }
 
-        /* Observações */
         .observations {
             margin-top: 10px;
         }
@@ -91,9 +87,8 @@
             margin: 5px 0;
         }
 
-        /* Assinaturas */
         .signatures {
-            margin-top: 30px; /* Mais espaço acima das assinaturas */
+            margin-top: 30px;
             display: flex;
             justify-content: space-between;
         }
@@ -115,7 +110,6 @@
             margin-top: 4px;
         }
 
-        /* Rodapé */
         .footer {
             margin-top: 10px;
             text-align: center;
@@ -137,12 +131,12 @@
             <p><strong>Procedimento:</strong> {{ $orcamento->procedimento }}</p>
             <p><strong>Dentista:</strong> {{ $orcamento->dentista }}</p>
             <p><strong>Data:</strong> {{ $orcamento->data->format('d/m/Y') }}</p>
-            <p><strong>Válido por: ____ dias.</p>
+            <p><strong>Válido por: 30 dias.</p>
         </div>
 
         <div class="observations">
             <h2>Observações:</h2>
-            @for ($i = 0; $i < 6; $i++)
+            @for ($i = 0; $i < 8; $i++)
                 <div class="line"></div>
             @endfor
         </div>

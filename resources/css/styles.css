@@ -2,3 +2,7 @@
 .select2-selection__rendered {
     color: inherit !important;
 }
+
+#pacientesTable_filter { 
+    display: none!important;
+}

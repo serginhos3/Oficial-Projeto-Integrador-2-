@@ -98,8 +98,8 @@
                     info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
                     infoEmpty: "Nenhuma entrada disponível",
                     infoFiltered: "(filtrado de _MAX_ entradas totais)",
-                    previous: "Anterior", // Traduzir "Previous"
-                    next: "Próximo", // Traduzir "Next"
+                    previous: "Anterior",
+                    next: "Próximo",
                     infoEmpty: "Sem registros",
                     zeroRecords: "Sem registros",
                     emptyTable: "Sem registros",
@@ -137,19 +137,22 @@
                 $(selectElement).css('color', color);
             }
 
-
             $('select[name="status"]').each(function() {
                 atualizarCorSelect(this);
             });
 
-
             $('select[name="status"]').on('change', function() {
                 var status = $(this).val();
                 var orcamentoId = $(this).attr('id').split('-')[1];
-
+                var $row = $(this).closest('tr'); // Obtenha a linha correspondente
 
                 atualizarCorSelect(this);
 
+                // Verifique se o status é "Cancelado"
+                if (status === 'cancelado') {
+                    // Mover a linha para o final da tabela
+                    $('#orcamentosTable tbody').append($row); // Adicione a linha ao final da tabela
+                }
 
                 $.ajax({
                     url: '/orcamentos/' + orcamentoId + '/update-status',
@@ -160,7 +163,6 @@
                     },
                     success: function(response) {
                         if (response.success) {
-
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Status atualizado!',
@@ -177,7 +179,6 @@
                     }
                 });
             });
-
         });
     </script>
 

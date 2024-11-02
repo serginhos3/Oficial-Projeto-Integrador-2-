@@ -27,7 +27,14 @@
         .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
             background: linear-gradient(to bottom, white 0%, #dcdcdc00 100%);
         }
-    </style>
+        #pacientesTable_filter {
+            display: none!important;
+        }
+
+        select {
+            background-image: initial!important;
+        } 
+    </style> 
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
