@@ -59,6 +59,9 @@ Route::get('/dashboard', function () {
         ->count();
 
     $valorTotalOrcamentos = Orcamento::sum('valor');
+    $valorOrcamentosEmAberto = Orcamento::where('status', 'Em aberto')->sum('valor');
+    $valorOrcamentosConcluidos = Orcamento::where('status', 'Concluído')->sum('valor');
+    $valorOrcamentosCancelados = Orcamento::where('status', 'Cancelado')->sum('valor');
 
     return view('dashboard', compact(
         'totalOrcamentos',
@@ -69,7 +72,11 @@ Route::get('/dashboard', function () {
         'orcamentosCancelados',
         'totalPacientes',
         'novosPacientes',
-        'valorTotalOrcamentos'
+        'valorTotalOrcamentos',
+        'valorOrcamentosEmAberto',
+        'valorOrcamentosConcluidos',
+        'valorOrcamentosCancelados',
+
     ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 

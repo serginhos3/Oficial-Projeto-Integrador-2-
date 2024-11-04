@@ -7,10 +7,11 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-gradient-to-r from-blue-300 to-purple-300 p-4 rounded-lg shadow-lg mb-6 text-left bg-opacity-70">
-                <div class="text-gray-900">
+
+            <div class="bg-gradient-to-r from-purple-300 to-blue-200 p-4 rounded-lg shadow-md mb-6 text-left">
+                <div class="text-gray-800">
                     <h2 class="text-2xl font-bold">
-                        {{ __("Bem-Vindo,") }}
+                        {{ __('Bem-Vindo,') }}
                     </h2>
                     <h3 class="text-xl font-light mt-1">
                         {{ Auth::user()->name }}
@@ -19,77 +20,117 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <a href="{{ route('pacientes.list') }}" class="bg-green-300 p-4 rounded-lg text-gray-800 shadow-lg transition duration-300 hover:shadow-xl hover:bg-green-400">
-                    <div class="text-center">
-                        <h3 class="text-lg font-light">Novos Pacientes</h3>
-                        <p class="text-3xl font-semibold mt-1">{{ $novosPacientes }}</p>
-                        <span class="text-sm mt-1">Pacientes neste mês</span>
+
+                <a
+                    class="p-6 bg-yellow-200 rounded-lg shadow-lg border-l-4 border-yellow-400 flex items-center justify-between text-yellow-800 transition duration-300 transform hover:bg-yellow-300">
+                    <div class="text-4xl">
+                        <i class="fas fa-hourglass-start"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl">R$ {{ number_format($valorOrcamentosEmAberto, 2, ',', '.') }}</p>
+                        <span class="text-sm font-medium">Valor total em aberto</span>
                     </div>
                 </a>
 
-                <a href="{{ route('pacientes.list') }}" class="bg-indigo-300 p-4 rounded-lg text-gray-800 shadow-lg transition duration-300 hover:shadow-xl hover:bg-indigo-400">
-                    <div class="text-center">
-                        <h3 class="text-lg font-light">Pacientes Cadastrados</h3>
-                        <p class="text-3xl font-semibold mt-1">{{ $totalPacientes }}</p>
-                        <span class="text-sm mt-1">Total de pacientes</span>
+                <a
+                    class="p-6 bg-green-300 rounded-lg shadow-lg border-l-4 border-green-500 flex items-center justify-between text-green-800 transition duration-300 transform hover:bg-green-400">
+                    <div class="text-4xl">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl">R$ {{ number_format($valorOrcamentosConcluidos, 2, ',', '.') }}</p>
+                        <span class="text-sm font-medium">Valor total concluído</span>
                     </div>
                 </a>
 
-                <a href="{{ route('orcamentos.list') }}" class="bg-blue-300 p-4 rounded-lg text-gray-800 shadow-lg transition duration-300 hover:shadow-xl hover:bg-blue-400">
-                    <div class="text-center">
-                        <h3 class="text-lg font-light">Novos Orçamentos</h3>
-                        <p class="text-3xl font-semibold mt-1">{{ $totalOrcamentos }}</p>
-                        <span class="text-sm mt-1">Orçamentos neste mês</span>
+                <a
+                    class="p-6 bg-red-300 rounded-lg shadow-lg border-l-4 border-red-500 flex items-center justify-between text-red-800 transition duration-300 transform hover:bg-red-400">
+                    <div class="text-4xl">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl">R$ {{ number_format($valorOrcamentosCancelados, 2, ',', '.') }}
+                        </p>
+                        <span class="text-sm font-medium">Valor total cancelado</span>
                     </div>
                 </a>
 
-                <a href="{{ route('orcamentos.list') }}" class="bg-yellow-300 p-4 rounded-lg text-gray-800 shadow-lg transition duration-300 hover:shadow-xl hover:bg-yellow-400">
-                    <div class="text-center">
-                        <h3 class="text-lg font-light">Status dos Orçamentos</h3>
-                        <ul class="mt-2 text-left text-sm space-y-1">
-                            <li class="flex justify-between">
-                                <span>Em Aberto:</span>
-                                <span class="font-semibold">{{ $orcamentosEmAberto }}</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Pendente:</span>
-                                <span class="font-semibold">{{ $orcamentosPendentes }}</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Em Andamento:</span>
-                                <span class="font-semibold">{{ $orcamentosEmAndamento }}</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Concluído:</span>
-                                <span class="font-semibold">{{ $orcamentosConcluidos }}</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Cancelado:</span>
-                                <span class="font-semibold">{{ $orcamentosCancelados }}</span>
-                            </li>
+
+
+                <a href="{{ route('orcamentos.list') }}"
+                    class="p-6 bg-yellow-200 rounded-lg shadow-lg border-l-4 border-yellow-400 flex items-center justify-between text-yellow-800 transition duration-300 transform hover:bg-yellow-300">
+                    <div class="text-4xl">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl font-bold">Status de Orçamentos</p>
+                        <ul class="mt-2 text-sm text-sm space-y-1">
+                            <li>Em Aberto: <span class="font-semibold">{{ $orcamentosEmAberto }}</span></li>
+                            <li>Pendente: <span class="font-semibold">{{ $orcamentosPendentes }}</span></li>
+                            <li>Em Andamento: <span class="font-semibold">{{ $orcamentosEmAndamento }}</span></li>
+                            <li>Concluído: <span class="font-semibold">{{ $orcamentosConcluidos }}</span></li>
+                            <li>Cancelado: <span class="font-semibold">{{ $orcamentosCancelados }}</span></li>
                         </ul>
                     </div>
                 </a>
 
-                <!-- Card de Valor Acumulado -->
-                <a class="bg-purple-300 p-4 rounded-lg text-gray-800 shadow-lg transition duration-300 hover:shadow-xl hover:bg-purple-400">
-                    <div class="flex flex-col justify-center items-center h-full text-center">
-                        <h3 class="text-lg font-light">Total de Orçamentos (Valor)</h3>
-                        <p class="text-3xl font-semibold mt-1 valor" style="display: none;">{{ 'R$' . number_format($valorTotalOrcamentos, 2, ',', '.') }}</p>
-                        <p class="text-3xl font-semibold mt-1 valor-oculto">*****</p>
-                        <span class="text-sm mt-1">Valor acumulado</span>
-                        <button class="mt-2" onclick="toggleValor(event, this)">
+                <a
+                    class="p-6 bg-green-300 rounded-lg shadow-lg border-l-4 border-green-500 flex items-center justify-between text-green-800 transition duration-300 transform hover:bg-green-400">
+                    <div class="text-4xl">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl font-bold valor" style="display: none;">
+                            {{ 'R$' . number_format($valorTotalOrcamentos, 2, ',', '.') }}</p>
+                        <p class="text-3xl font-bold valor-oculto">*****</p>
+                        <span class="text-sm font-medium">Valor acumulado de todos os orçamentos</span>
+                        <button class="ml-2" onclick="toggleValor(event, this)">
                             <i class="fas fa-eye" aria-hidden="true"></i>
                         </button>
                     </div>
                 </a>
 
-                <!-- Card para Quantidade Total de Orçamentos -->
-                <a class="bg-red-300 p-4 rounded-lg text-gray-800 shadow-lg transition duration-300 hover:shadow-xl hover:bg-red-400">
-                    <div class="flex flex-col justify-center items-center h-full text-center">
-                        <h3 class="text-lg font-light">Quantidade Total de Orçamentos</h3>
-                        <p class="text-3xl font-semibold mt-1">{{ $totalOrcamentos }}</p>
-                        <span class="text-sm mt-1">Total de orçamentos cadastrados</span>
+                <a
+                    class="p-6 bg-blue-200 rounded-lg shadow-lg border-l-4 border-blue-400 flex items-center justify-between text-blue-800 transition duration-300 transform hover:bg-blue-300">
+                    <div class="text-4xl">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl font-bold">{{ $totalOrcamentos }}</p>
+                        <span class="text-sm font-medium">Total de orçamentos cadastrados</span>
+                    </div>
+                </a>
+
+                <a href="{{ route('orcamentos.list') }}"
+                    class="p-6 bg-purple-300 rounded-lg shadow-lg border-l-4 border-purple-500 flex items-center justify-between text-purple-800 transition duration-300 transform hover:bg-purple-400">
+                    <div class="text-4xl">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl font-bold">{{ $totalOrcamentos }}</p>
+                        <span class="text-sm font-medium">Orçamentos neste mês</span>
+                    </div>
+                </a>
+                
+                <a href="{{ route('pacientes.list') }}"
+                    class="p-6 bg-pink-200 rounded-lg shadow-lg border-l-4 border-pink-400 flex items-center justify-between text-pink-800 transition duration-300 transform hover:bg-pink-300">
+                    <div class="text-4xl">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl font-bold">{{ $novosPacientes }}</p>
+                        <span class="text-sm font-medium">Novos pacientes neste mês</span>
+                    </div>
+                </a>
+
+                <a href="{{ route('pacientes.list') }}"
+                    class="p-6 bg-blue-100 rounded-lg shadow-lg border-l-4 border-blue-400 flex items-center justify-between text-blue-800 transition duration-300 transform hover:bg-blue-200">
+                    <div class="text-4xl">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl font-bold">{{ $totalPacientes }}</p>
+                        <span class="text-sm font-medium">Total de pacientes cadastrados</span>
                     </div>
                 </a>
             </div>
