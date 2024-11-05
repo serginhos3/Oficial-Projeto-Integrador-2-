@@ -15,12 +15,18 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Senha')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
+            <div class="relative">
+                <x-text-input id="password" class="block mt-1 w-full pr-10" 
+                              type="password" 
+                              name="password" 
+                              required autocomplete="current-password" />
+            </div>
+            <div class="flex justify-end mt-1">
+                <label for="togglePassword" class="flex items-center text-sm text-gray-600">
+                    <input type="checkbox" id="togglePasswordCheckbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 mr-2" onclick="togglePasswordVisibility()">
+                    <span class="ms-2 text-sm text-gray-600">{{ __('Mostrar senha') }}</span>
+                </label>
+            </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
@@ -40,8 +46,8 @@
             @endif
 
             @if (Route::has('register'))
-             <a href="{{ route('register') }}" class="btn ms-4 text-white" style="background-color: #4CAF50; padding: 5px 15px; border-radius: 20px; font-size: 14px; text-decoration: none;">
-                  {{ __('Crie sua conta') }}
+                <a href="{{ route('register') }}" class="btn ms-4 text-white" style="background-color: #4CAF50; padding: 5px 15px; border-radius: 20px; font-size: 14px; text-decoration: none;">
+                    {{ __('Crie sua conta') }}
                 </a>
             @endif
 
@@ -50,4 +56,13 @@
             </x-primary-button>
         </div>
     </form>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+
+        function togglePasswordVisibility() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+        }
+    </script>
 </x-guest-layout>

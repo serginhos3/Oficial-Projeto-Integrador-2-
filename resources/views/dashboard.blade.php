@@ -8,8 +8,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <div class="bg-gradient-to-r from-purple-300 to-blue-200 p-4 rounded-lg shadow-md mb-6 text-left">
-                <div class="text-gray-800">
+            <div class="bg-gradient-to-r from-purple-400 to-blue-300 p-4 rounded-lg shadow-md mb-6 text-left">
+                <div class="text-white">
                     <h2 class="text-2xl font-bold">
                         {{ __('Bem-Vindo,') }}
                     </h2>
@@ -22,7 +22,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
                 <a
-                    class="p-6 bg-yellow-200 rounded-lg shadow-lg border-l-4 border-yellow-400 flex items-center justify-between text-yellow-800 transition duration-300 transform hover:bg-yellow-300">
+                    class="p-6 bg-yellow-400 rounded-lg shadow-lg border-l-4 border-yellow-500 flex items-center justify-between text-gray-800 transition duration-300 transform hover:bg-yellow-300">
                     <div class="text-4xl">
                         <i class="fas fa-hourglass-start"></i>
                     </div>
@@ -33,7 +33,7 @@
                 </a>
 
                 <a
-                    class="p-6 bg-green-300 rounded-lg shadow-lg border-l-4 border-green-500 flex items-center justify-between text-green-800 transition duration-300 transform hover:bg-green-400">
+                    class="p-6 bg-green-400 rounded-lg shadow-lg border-l-4 border-green-600 flex items-center justify-between text-gray-800 transition duration-300 transform hover:bg-green-300">
                     <div class="text-4xl">
                         <i class="fas fa-check-circle"></i>
                     </div>
@@ -44,27 +44,24 @@
                 </a>
 
                 <a
-                    class="p-6 bg-red-300 rounded-lg shadow-lg border-l-4 border-red-500 flex items-center justify-between text-red-800 transition duration-300 transform hover:bg-red-400">
+                    class="p-6 bg-red-400 rounded-lg shadow-lg border-l-4 border-red-600 flex items-center justify-between text-gray-800 transition duration-300 transform hover:bg-red-300">
                     <div class="text-4xl">
                         <i class="fas fa-ban"></i>
                     </div>
                     <div class="text-right">
-                        <p class="text-3xl">R$ {{ number_format($valorOrcamentosCancelados, 2, ',', '.') }}
-                        </p>
-                        <span class="text-sm font-medium">Valor total cancelado</span>
+                        <p class="text-3xl">R$ {{ number_format($valorOrcamentosCancelados, 2, ',', '.') }}</p>
+                        <span class="text-sm font-medium">Valor total cancelados</span>
                     </div>
                 </a>
 
-
-
                 <a href="{{ route('orcamentos.list') }}"
-                    class="p-6 bg-yellow-200 rounded-lg shadow-lg border-l-4 border-yellow-400 flex items-center justify-between text-yellow-800 transition duration-300 transform hover:bg-yellow-300">
+                    class="p-6 bg-blue-400 rounded-lg shadow-lg border-l-4 border-blue-600 flex items-center justify-between text-gray-800 transition duration-300 transform hover:bg-blue-300">
                     <div class="text-4xl">
                         <i class="fas fa-clipboard-list"></i>
                     </div>
                     <div class="text-right">
                         <p class="text-3xl font-bold">Status de Orçamentos</p>
-                        <ul class="mt-2 text-sm text-sm space-y-1">
+                        <ul class="mt-2 text-sm space-y-1">
                             <li>Em Aberto: <span class="font-semibold">{{ $orcamentosEmAberto }}</span></li>
                             <li>Pendente: <span class="font-semibold">{{ $orcamentosPendentes }}</span></li>
                             <li>Em Andamento: <span class="font-semibold">{{ $orcamentosEmAndamento }}</span></li>
@@ -75,13 +72,12 @@
                 </a>
 
                 <a
-                    class="p-6 bg-green-300 rounded-lg shadow-lg border-l-4 border-green-500 flex items-center justify-between text-green-800 transition duration-300 transform hover:bg-green-400">
+                    class="p-6 bg-green-400 rounded-lg shadow-lg border-l-4 border-green-600 flex items-center justify-between text-gray-800 transition duration-300 transform hover:bg-green-300">
                     <div class="text-4xl">
                         <i class="fas fa-coins"></i>
                     </div>
                     <div class="text-right">
-                        <p class="text-3xl font-bold valor" style="display: none;">
-                            {{ 'R$' . number_format($valorTotalOrcamentos, 2, ',', '.') }}</p>
+                        <p class="text-3xl font-bold valor" style="display: none;">{{ 'R$' . number_format($valorTotalOrcamentos, 2, ',', '.') }}</p>
                         <p class="text-3xl font-bold valor-oculto">*****</p>
                         <span class="text-sm font-medium">Valor acumulado de todos os orçamentos</span>
                         <button class="ml-2" onclick="toggleValor(event, this)">
@@ -102,7 +98,7 @@
                 </a>
 
                 <a href="{{ route('orcamentos.list') }}"
-                    class="p-6 bg-purple-300 rounded-lg shadow-lg border-l-4 border-purple-500 flex items-center justify-between text-purple-800 transition duration-300 transform hover:bg-purple-400">
+                    class="p-6 bg-purple-400 rounded-lg shadow-lg border-l-4 border-purple-600 flex items-center justify-between text-gray-800 transition duration-300 transform hover:bg-purple-300">
                     <div class="text-4xl">
                         <i class="fas fa-file-invoice-dollar"></i>
                     </div>
@@ -113,7 +109,7 @@
                 </a>
                 
                 <a href="{{ route('pacientes.list') }}"
-                    class="p-6 bg-pink-200 rounded-lg shadow-lg border-l-4 border-pink-400 flex items-center justify-between text-pink-800 transition duration-300 transform hover:bg-pink-300">
+                    class="p-6 bg-pink-400 rounded-lg shadow-lg border-l-4 border-pink-600 flex items-center justify-between text-gray-800 transition duration-300 transform hover:bg-pink-300">
                     <div class="text-4xl">
                         <i class="fas fa-users"></i>
                     </div>
@@ -124,7 +120,7 @@
                 </a>
 
                 <a href="{{ route('pacientes.list') }}"
-                    class="p-6 bg-blue-100 rounded-lg shadow-lg border-l-4 border-blue-400 flex items-center justify-between text-blue-800 transition duration-300 transform hover:bg-blue-200">
+                    class="p-6 bg-blue-300 rounded-lg shadow-lg border-l-4 border-blue-500 flex items-center justify-between text-gray-800 transition duration-300 transform hover:bg-blue-400">
                     <div class="text-4xl">
                         <i class="fas fa-user"></i>
                     </div>

@@ -131,7 +131,7 @@
             <p><strong>Procedimento:</strong> {{ $orcamento->procedimento }}</p>
             <p><strong>Dentista:</strong> {{ $orcamento->dentista }}</p>
             <p><strong>Data:</strong> {{ $orcamento->data->format('d/m/Y') }}</p>
-            <p><strong>Válido por: 30 dias.</p>
+            <p><strong>Válido por: 30 dias</p>
         </div>
 
         <div class="observations">

@@ -21,20 +21,23 @@
         .dataTables_wrapper .dataTables_paginate .paginate_button {
             border: none !important;
         }
+
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
             background: linear-gradient(to bottom, white 0%, #dcdcdc00 100%);
         }
+
         .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
             background: linear-gradient(to bottom, white 0%, #dcdcdc00 100%);
         }
+
         #pacientesTable_filter {
-            display: none!important;
+            display: none !important;
         }
 
         select {
-            background-image: initial!important;
-        } 
-    </style> 
+            background-image: initial !important;
+        }
+    </style>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -46,11 +49,11 @@
 
         <!-- Page Heading -->
         @isset($header)
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                {{ $header }}
-            </div>
-        </header>
+            <header class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
         @endisset
 
         <!-- Page Content -->
