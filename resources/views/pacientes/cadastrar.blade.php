@@ -144,7 +144,7 @@
             const errorMessage = document.getElementById('error-message');
             if (age < 4) {
                 errorMessage.classList.remove('hidden');
-                this.value = ''; // Limpa o campo
+                this.value = '';
             } else {
                 errorMessage.classList.add('hidden');
             }

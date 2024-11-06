@@ -144,14 +144,12 @@
             $('select[name="status"]').on('change', function() {
                 var status = $(this).val();
                 var orcamentoId = $(this).attr('id').split('-')[1];
-                var $row = $(this).closest('tr'); // Obtenha a linha correspondente
+                var $row = $(this).closest('tr');
 
                 atualizarCorSelect(this);
 
-                // Verifique se o status é "Cancelado"
                 if (status === 'cancelado') {
-                    // Mover a linha para o final da tabela
-                    $('#orcamentosTable tbody').append($row); // Adicione a linha ao final da tabela
+                    $('#orcamentosTable tbody').append($row);
                 }
 
                 $.ajax({

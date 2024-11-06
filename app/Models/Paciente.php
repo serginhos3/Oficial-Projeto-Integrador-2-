@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Paciente extends Model
 {
-    // Especificar a tabela se necessário
     protected $table = 'pacientes';
 
-    // Atributos que podem ser preenchidos em massa
+
     protected $fillable = [
         'nome',
         'email',
@@ -28,7 +27,6 @@ class Paciente extends Model
         'datanascimento' => 'date',
     ];
 
-    // App\Models\Paciente.php
     public function orcamentos()
     {
         return $this->hasMany(Orcamento::class, 'idpaciente');

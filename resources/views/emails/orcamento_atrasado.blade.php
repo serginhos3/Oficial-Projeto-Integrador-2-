@@ -31,7 +31,6 @@
     </style>
 </head>
 <body>
-    <img src="public/img/minilogo.png" alt="Logo da Clínica" class="logo">
     <h1>Orçamento em Aberto</h1>
     <p>Prezado(a),</p>
     <p>Esperamos que esta mensagem o(a) encontre bem. Gostaríamos de lembrá-lo(a) que o orçamento referente a <strong>Avaliação do dia:</strong> {{ $orcamento->created_at->format('d/m/Y') }} está em aberto há mais de <strong>30 dias</strong>. Abaixo, seguem as informações detalhadas sobre o orçamento:</p>

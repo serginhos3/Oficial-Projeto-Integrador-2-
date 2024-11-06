@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Orcamento; // Importa a classe Orçamento
+use App\Models\Orcamento;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
@@ -11,33 +11,26 @@ use App\Models\Paciente;
 
 class OrcamentosController extends Controller
 {
-    /**
-     * Exibe a lista de orçamento.
-     */
+
     public function list(Request $request): View
     {
         $orcamentos = Orcamento::all();
         return view('orcamentos.list', compact('orcamentos'));
     }
 
-    /**
-     * Exibe o formulário para cadastrar um novo orçamento.
-     */
     public function criar(): View
     {
 
-        $pacientes = Paciente::all(); // Carrega todos os pacientes
+        $pacientes = Paciente::all();
         return view('orcamentos.criar', compact('pacientes'));
     }
 
-    /**
-     * Processa o cadastro de um novo orçamento.
-     */
+
     public function store(Request $request)
     {
 
         $validatedData = $request->validate([
-            'idpaciente' => 'required|exists:pacientes,id', // Valida 'idpaciente' em vez de 'paciente'
+            'idpaciente' => 'required|exists:pacientes,id',
             'valor' => 'required|string',
             'procedimento' => 'required|string',
             'dentista' => 'required|string',
@@ -52,7 +45,7 @@ class OrcamentosController extends Controller
         if (is_numeric($valor)) {
             Orcamento::create([
                 'idpaciente' => $validatedData['idpaciente'],
-                'paciente' => $pacienteNome,  // Verifique aqui
+                'paciente' => $pacienteNome,
                 'valor' => (float) $valor,
                 'procedimento' => $validatedData['procedimento'],
                 'dentista' => $validatedData['dentista'],
@@ -93,18 +86,14 @@ class OrcamentosController extends Controller
         return response()->json(['success' => false, 'message' => 'Orçamento não encontrado.'], 404);
     }
 
-    /**
-     * Exibe o formulário para editar um orçamento.
-     */
+
     public function editar($id): View
     {
         $orcamento = Orcamento::findOrFail($id);
         return view('orcamentos.editar', compact('orcamento'));
     }
 
-    /**
-     * Atualiza os dados de um orçamento.
-     */
+
     public function atualizar(Request $request, $id)
     {
 
@@ -144,9 +133,6 @@ class OrcamentosController extends Controller
         return redirect()->route('orcamentos.list')->with('status', 'Orçamento atualizado com sucesso!');
     }
 
-    /**
-     * Remove um orçamento.
-     */
     public function destroy($id)
     {
         $orcamento = Orcamento::findOrFail($id);

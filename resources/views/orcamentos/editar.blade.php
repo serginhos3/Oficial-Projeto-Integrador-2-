@@ -107,7 +107,7 @@
                 pacientes.forEach(paciente => {
                     const li = document.createElement('li');
                     li.textContent = paciente.nome;
-                    li.classList.add('px-4', 'py-2', 'cursor-pointer', 'hover:bg-blue-200'); // Hover em azul mais claro
+                    li.classList.add('px-4', 'py-2', 'cursor-pointer', 'hover:bg-blue-200');
                     li.addEventListener('click', () => {
                         document.getElementById('paciente').value = paciente.nome;
                         document.getElementById('idpaciente').value = paciente.id;
