@@ -9,14 +9,13 @@ use Tests\TestCase;
 
 class PacientesControllerTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
 
     private $user;
 
     protected function setUp(): void
     {
         parent::setUp();
-        // Cria e autentica um usuário para acessar as rotas protegidas
         $this->user = User::factory()->create();
         $this->actingAs($this->user);
     }
@@ -64,7 +63,7 @@ class PacientesControllerTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function test_tela_de_edicao_de_paciente_esta_acessivel()
     {
-        // Criação do paciente
+
         $response = $this->post(route('pacientes.store'), [
             'nome' => 'Paciente Teste',
             'email' => 'paciente@teste.com',
@@ -79,13 +78,10 @@ class PacientesControllerTest extends TestCase
             'datanascimento' => '2000-01-01',
         ]);
 
-        // Obtendo o ID do paciente criado
         $paciente = \App\Models\Paciente::where('email', 'paciente@teste.com')->first();
 
-        // Passando o ID do paciente para a URL de edição
         $response = $this->get(route('pacientes.editar', $paciente->id));
 
-        // Verificando a resposta
         $response->assertStatus(200)
             ->assertViewIs('pacientes.editar');
     }
@@ -93,7 +89,7 @@ class PacientesControllerTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function test_atualizar_paciente()
     {
-        // Criação manual do paciente sem usar factory
+
         $paciente = Paciente::create([
             'nome' => 'Paciente Antigo',
             'email' => 'antigo@teste.com',
@@ -108,7 +104,6 @@ class PacientesControllerTest extends TestCase
             'datanascimento' => '1990-01-01',
         ]);
 
-        // Atualizando os dados do paciente
         $response = $this->put(route('pacientes.atualizar', $paciente->id), [
             'nome' => 'Paciente Atualizado',
             'email' => 'atualizado@teste.com',
@@ -123,13 +118,11 @@ class PacientesControllerTest extends TestCase
             'datanascimento' => '1990-01-01',
         ]);
 
-        // Verificando o redirecionamento
         $response->assertRedirect(route('pacientes.list'))
             ->assertSessionHas('status', 'Paciente atualizado com sucesso!');
 
-        // Verificando se os dados no banco de dados foram atualizados
         $this->assertDatabaseHas('pacientes', [
-            'id' => $paciente->id,  // Verificando pelo ID do paciente
+            'id' => $paciente->id,
             'nome' => 'Paciente Atualizado',
             'email' => 'atualizado@teste.com'
         ]);
@@ -138,7 +131,7 @@ class PacientesControllerTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function test_excluir_paciente()
     {
-        // Criação manual do paciente sem usar factory
+
         $paciente = Paciente::create([
             'nome' => 'Paciente a Excluir',
             'email' => 'excluir@teste.com',
@@ -153,14 +146,11 @@ class PacientesControllerTest extends TestCase
             'datanascimento' => '1990-01-01',
         ]);
 
-        // Excluindo o paciente
         $response = $this->delete(route('pacientes.destroy', $paciente->id));
 
-        // Verificando o redirecionamento após a exclusão
         $response->assertRedirect(route('pacientes.list'))
             ->assertSessionHas('status', 'Paciente excluído com sucesso!');
 
-        // Verificando se o paciente foi realmente excluído do banco de dados
         $this->assertDatabaseMissing('pacientes', ['id' => $paciente->id]);
     }
 }

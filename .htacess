@@ -1,0 +1,23 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redireciona todas as requisições para a pasta public
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ /public/$1 [L]
+
+    # Redirecionamento para HTTPS (se estiver configurado no servidor)
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Redirecionar requisições para index.php se não encontrarem o arquivo/diretório
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
+
+    # Prevenir a listagem de diretórios
+    Options -Indexes
+
+    # Configuração para erro 404
+    ErrorDocument 404 /public/index.php
+
+</IfModule>
